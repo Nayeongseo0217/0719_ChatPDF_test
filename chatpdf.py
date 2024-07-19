@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitters import RecursiveCharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
@@ -123,7 +123,7 @@ if uploaded_file is not None:
         with st.spinner('답변하는 중...'):
             # 검색된 문서에서 컨텍스트 생성
             context_docs = retriever.get_relevant_documents(question)
-            context_text = " ".join([doc for doc in context_docs])
+            context_text = " ".join([doc.page_content for doc in context_docs])
             # 체인을 사용하여 질문에 대한 답변 생성
             answer = chain.invoke({"context": context_text, "question": question})
             st.write(answer)
