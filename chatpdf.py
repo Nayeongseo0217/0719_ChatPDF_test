@@ -14,8 +14,9 @@ import streamlit as st
 import tempfile
 import os
 import google.generativeai as genai
-import sys
 from dotenv import load_dotenv
+
+load_dotenv()
 
 st.title('ChatPDF')
 st.write('---')
