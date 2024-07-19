@@ -1,4 +1,3 @@
-import sys
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -9,7 +8,6 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_google_genai import ChatGoogleGenerativeAI
 import absl.logging
 import logging
 import streamlit as st
@@ -90,8 +88,20 @@ if uploaded_file is not None:
     """
     prompt = ChatPromptTemplate.from_template(template)
 
+    # Google Generative AI 설정
+    class CustomGoogleGenerativeAI:
+        def __init__(self, model_name):
+            self.model_name = model_name
+
+        def __call__(self, prompt_text):
+            return genai.generate_text(
+                model=self.model_name,
+                prompt=prompt_text,
+                temperature=0.7,
+            ).generated_text
+
     # AI 답변 생성 모델 설정
-    model = ChatGoogleGenerativeAI(model="gemini-pro")
+    model = CustomGoogleGenerativeAI(model_name="gemini-pro")
 
     # 체인 설정 및 생성
     chain = (
