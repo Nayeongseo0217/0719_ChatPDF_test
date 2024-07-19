@@ -10,3 +10,4 @@ absl-py
 google-generativeai
 PyMuPDF
 pymupdf
+pypdf
