@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 import os
-import google.generativeai as genai
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
@@ -8,6 +7,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain import HuggingFaceHub
 import absl.logging
 import logging
 import streamlit as st
@@ -31,10 +31,10 @@ logging.basicConfig(level=logging.INFO)
 load_dotenv()
 
 # 환경 변수에서 API 키 가져오기
-api_key = os.getenv('GOOGLE_API_KEY')
+hf_api_key = os.getenv('HUGGINGFACEHUB_API_TOKEN')
 
-# API 키를 사용하여 genai 구성
-genai.configure(api_key=api_key)
+# HuggingFaceHub 설정
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = hf_api_key
 
 # 파일 업로드
 uploaded_file = st.file_uploader('PDF 파일을 업로드 하세요')
@@ -88,8 +88,8 @@ if uploaded_file is not None:
     """
     prompt = ChatPromptTemplate.from_template(template)
 
-    # AI 답변 생성 모델 설정
-    model = genai.ChatModel(model="gemini-pro")
+    # HuggingFaceHub 모델 설정
+    model = HuggingFaceHub(repo_id="google/flan-t5-large", model_kwargs={"temperature": 0.5})
 
     # 체인 설정 및 생성
     chain = (
