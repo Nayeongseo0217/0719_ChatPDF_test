@@ -78,7 +78,7 @@ if uploaded_file is not None:
     embeddings = go.embed_documents(page_texts)
 
     # 벡터 저장소 생성
-    vectorstore = FAISS.from_texts(page_texts, embedding=embeddings)
+    vectorstore = FAISS.from_texts(page_texts, embeddings)
 
     # 검색기 생성
     retriever = vectorstore.as_retriever()
