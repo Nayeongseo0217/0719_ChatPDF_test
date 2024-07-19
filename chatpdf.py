@@ -72,13 +72,13 @@ if uploaded_file is not None:
     page_texts = [text.page_content for text in texts]
 
     # 임베딩 모델 설정
-    go = HuggingFaceEmbeddings(model_name='jhgan/ko-sroberta-multitask')
+    embedding_model = HuggingFaceEmbeddings(model_name='jhgan/ko-sroberta-multitask')
 
     # 텍스트를 임베딩 벡터로 변환
-    embeddings = go.embed_documents(page_texts)
+    embeddings = embedding_model.embed_documents(page_texts)
 
     # 벡터 저장소 생성
-    vectorstore = FAISS.from_texts(page_texts, embeddings)
+    vectorstore = FAISS.from_texts(page_texts, embedding=embeddings)
 
     # 검색기 생성
     retriever = vectorstore.as_retriever()
