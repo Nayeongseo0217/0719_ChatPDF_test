@@ -3,6 +3,7 @@ python-dotenv
 google-cloud
 google-cloud-aiplatform
 langchain
-langchain_huggingface
+langchain-huggingface
+langchain-community
 faiss-cpu
 absl-py
