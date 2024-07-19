@@ -99,7 +99,7 @@ if uploaded_file is not None:
                 prompt=prompt_text,
                 temperature=0.7,
             )
-            return response.result
+            return response.result[0].generated_text
 
     # AI 답변 생성 모델 설정
     model = CustomGoogleGenerativeAI(model_name="models/gemini-pro")
