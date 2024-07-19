@@ -93,7 +93,8 @@ if uploaded_file is not None:
         def __init__(self, model_name):
             self.model_name = model_name
 
-        def __call__(self, prompt_text):
+        def __call__(self, input_data):
+            prompt_text = input_data["context"] + "\n\nQuestion: " + input_data["question"]
             response = genai.generate_text(
                 model=self.model_name,
                 prompt=prompt_text,
@@ -117,5 +118,5 @@ if uploaded_file is not None:
     question = st.text_input('질문을 입력하세요')
     if st.button('질문하기'):
         with st.spinner('답변하는 중...'):
-            answer = chain.invoke(question)
+            answer = chain.invoke({"question": question})
             st.write(answer)
