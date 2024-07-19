@@ -4,9 +4,9 @@ google-cloud
 google-cloud-aiplatform
 langchain
 langchain-huggingface
+langchain-community
 faiss-cpu
 absl-py
 PyMuPDF
 pypdf
-pysqlite3
 google-generativeai
