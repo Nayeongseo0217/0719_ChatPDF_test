@@ -101,7 +101,7 @@ if uploaded_file is not None:
             ).generated_text
 
     # AI 답변 생성 모델 설정
-    model = CustomGoogleGenerativeAI(model_name="gemini-pro")
+    model = CustomGoogleGenerativeAI(model_name="models/gemini-pro")
 
     # 체인 설정 및 생성
     chain = (
