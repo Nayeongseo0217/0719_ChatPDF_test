@@ -71,8 +71,8 @@ if uploaded_file is not None:
     go = HuggingFaceEmbeddings(model_name='jhgan/ko-sroberta-multitask')
 
     # PDF 텍스트 분할 및 저장
-    texts = text_splitter.split_documents(pages)
-    texts = [doc.page_content for doc in texts]
+    docs = text_splitter.split_documents(pages)
+    texts = [doc.page_content for doc in docs]
 
     # 벡터 저장소 생성
     vectorstore = FAISS.from_texts(texts, embedding=go)
@@ -100,7 +100,7 @@ if uploaded_file is not None:
                 prompt=prompt_text,
                 temperature=0.7,
             )
-            return response.result[0].generated_text
+            return response.candidates[0]['output']
 
     # AI 답변 생성 모델 설정
     model = CustomGoogleGenerativeAI(model_name="models/gemini-pro")
@@ -118,5 +118,5 @@ if uploaded_file is not None:
     question = st.text_input('질문을 입력하세요')
     if st.button('질문하기'):
         with st.spinner('답변하는 중...'):
-            answer = chain.invoke({"question": question})
+            answer = chain.invoke({"context": "운수 좋은 날", "question": question})
             st.write(answer)
