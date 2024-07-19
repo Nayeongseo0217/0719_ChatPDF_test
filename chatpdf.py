@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
@@ -74,8 +74,11 @@ if uploaded_file is not None:
     # 임베딩 모델 설정
     go = HuggingFaceEmbeddings(model_name='jhgan/ko-sroberta-multitask')
 
+    # 텍스트를 임베딩 벡터로 변환
+    embeddings = go.embed_documents(page_texts)
+
     # 벡터 저장소 생성
-    vectorstore = FAISS.from_texts(page_texts, embedding=go)
+    vectorstore = FAISS.from_embeddings(embeddings, page_texts)
 
     # 검색기 생성
     retriever = vectorstore.as_retriever()
@@ -118,7 +121,9 @@ if uploaded_file is not None:
     question = st.text_input('질문을 입력하세요')
     if st.button('질문하기'):
         with st.spinner('답변하는 중...'):
-            context = retriever.get_relevant_documents(question)
-            context_text = " ".join([doc.page_content for doc in context])
+            # 검색된 문서에서 컨텍스트 생성
+            context_docs = retriever.get_relevant_documents(question)
+            context_text = " ".join([doc for doc in context_docs])
+            # 체인을 사용하여 질문에 대한 답변 생성
             answer = chain.invoke({"context": context_text, "question": question})
             st.write(answer)
