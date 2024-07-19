@@ -6,4 +6,3 @@ langchain
 langchain_huggingface
 faiss-cpu
 absl-py
-pysqlite3
