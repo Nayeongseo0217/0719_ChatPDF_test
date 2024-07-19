@@ -94,11 +94,12 @@ if uploaded_file is not None:
             self.model_name = model_name
 
         def __call__(self, prompt_text):
-            return genai.generate_text(
+            response = genai.generate_text(
                 model=self.model_name,
                 prompt=prompt_text,
                 temperature=0.7,
-            ).generated_text
+            )
+            return response.result
 
     # AI 답변 생성 모델 설정
     model = CustomGoogleGenerativeAI(model_name="models/gemini-pro")
