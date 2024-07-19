@@ -7,3 +7,4 @@ langchain-huggingface
 langchain-community
 faiss-cpu
 absl-py
+google-generativeai
