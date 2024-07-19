@@ -8,5 +8,4 @@ langchain-community
 faiss-cpu
 absl-py
 PyMuPDF
-pymupdf
 pypdf
