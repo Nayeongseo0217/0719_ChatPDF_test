@@ -118,5 +118,7 @@ if uploaded_file is not None:
     question = st.text_input('질문을 입력하세요')
     if st.button('질문하기'):
         with st.spinner('답변하는 중...'):
-            answer = chain.invoke({"context": "", "question": question})
+            context = retriever.get_relevant_documents(question)
+            context_text = " ".join([doc.page_content for doc in context])
+            answer = chain.invoke({"context": context_text, "question": question})
             st.write(answer)
