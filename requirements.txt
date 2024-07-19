@@ -9,3 +9,4 @@ faiss-cpu
 absl-py
 google-generativeai
 PyMuPDF
+pymupdf
