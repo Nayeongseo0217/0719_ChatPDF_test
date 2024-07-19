@@ -67,15 +67,15 @@ if uploaded_file is not None:
         is_separator_regex=False,  # 분리자 정규 표현식 사용 여부
     )
 
+    # PDF 텍스트 분할 및 저장
+    texts = text_splitter.split_documents(pages)
+    page_texts = [text.page_content for text in texts]
+
     # 임베딩 모델 설정
     go = HuggingFaceEmbeddings(model_name='jhgan/ko-sroberta-multitask')
 
-    # PDF 텍스트 분할 및 저장
-    docs = text_splitter.split_documents(pages)
-    texts = [doc.page_content for doc in docs]
-
     # 벡터 저장소 생성
-    vectorstore = FAISS.from_texts(texts, embedding=go)
+    vectorstore = FAISS.from_texts(page_texts, embedding=go)
 
     # 검색기 생성
     retriever = vectorstore.as_retriever()
@@ -118,5 +118,5 @@ if uploaded_file is not None:
     question = st.text_input('질문을 입력하세요')
     if st.button('질문하기'):
         with st.spinner('답변하는 중...'):
-            answer = chain.invoke({"context": "운수 좋은 날", "question": question})
+            answer = chain.invoke({"context": "", "question": question})
             st.write(answer)
