@@ -71,6 +71,11 @@ if uploaded_file is not None:
     texts = text_splitter.split_documents(pages)
     page_texts = [text.page_content for text in texts]
 
+    # 모든 요소가 문자열인지 확인
+    if not all(isinstance(text, str) for text in page_texts):
+        st.error("Some elements in page_texts are not strings.")
+        st.stop()
+
     # 임베딩 모델 설정
     embedding_model = HuggingFaceEmbeddings(model_name='jhgan/ko-sroberta-multitask')
 
